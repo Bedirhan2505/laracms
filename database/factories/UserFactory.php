@@ -24,6 +24,8 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        
+
         return [
             'name' => 'Bedirhan Çıldıroğlu',
             'email' => 'bedirhancildiroglu@gmail.com',

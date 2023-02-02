@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,12 +19,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
-    Route::get('/dashboard', function () {
+Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified'])->group(function () {
+    // Routes Redirect
+    Route::get('/dashboard',[HomeController::class,'redirectUser'])->name('dashboard');
+});
+
+Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified','role:user'])->group(function () {
+    //User Routes
+    Route::get('/home', function () {
         return view('dashboard');
-    })->name('dashboard');
+    })->name('user.dashboard');
+});
+
+Route::middleware(['auth:sanctum',config('jetstream.auth_session'),'verified','role:admin'])->group(function () {
+    //Admin Routes
+    Route::get('/admin/dashboard',[DashboardController::class,'dashboard'])->name('admin.dashboard');
 });
